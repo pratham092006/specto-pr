@@ -14,6 +14,18 @@ dotenv.config();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const MOCK_MODE = !GITHUB_TOKEN || GITHUB_TOKEN === 'mock_token_for_testing';
 
+function createMockPullRequestResult(owner, repo, title, head, base) {
+  const mockNumber = 1;
+  return {
+    url: `https://github.com/${owner}/${repo}/pull/${mockNumber}`,
+    number: mockNumber,
+    id: `mock-pr-${Date.now()}`,
+    title,
+    head,
+    base
+  };
+}
+
 /**
  * Initialize Octokit client
  * @returns {Octokit} Configured Octokit instance
@@ -63,6 +75,12 @@ export function parseRepoUrl(repoUrl) {
  */
 export async function cloneRepository(repoUrl, localPath, branch = 'main') {
   try {
+    if (MOCK_MODE) {
+      console.warn('[GitHub] Running in MOCK MODE - skipping repository clone');
+      await fs.mkdir(localPath, { recursive: true });
+      return;
+    }
+
     console.log(`[GitHub] Cloning ${repoUrl} to ${localPath}...`);
     
     const git = simpleGit();
@@ -86,6 +104,11 @@ export async function cloneRepository(repoUrl, localPath, branch = 'main') {
  */
 export async function checkWriteAccess(owner, repo) {
   try {
+    if (MOCK_MODE) {
+      console.warn('[GitHub] Running in MOCK MODE - assuming write access');
+      return true;
+    }
+
     const octokit = getOctokit();
     const { data } = await octokit.rest.repos.get({ owner, repo });
     return data.permissions?.push || data.permissions?.admin || false;
@@ -103,6 +126,10 @@ export async function checkWriteAccess(owner, repo) {
  */
 export async function getDefaultBranch(owner, repo) {
   try {
+    if (MOCK_MODE) {
+      return 'main';
+    }
+
     const octokit = getOctokit();
     const { data } = await octokit.rest.repos.get({ owner, repo });
     return data.default_branch || 'main';
@@ -121,6 +148,11 @@ export async function getDefaultBranch(owner, repo) {
  */
 export async function createBranch(owner, repo, newBranch, baseBranch) {
   try {
+    if (MOCK_MODE) {
+      console.warn('[GitHub] Running in MOCK MODE - skipping branch creation');
+      return `mock-sha-${Date.now()}`;
+    }
+
     const octokit = getOctokit();
     
     console.log(`[GitHub] Creating branch ${newBranch} from ${baseBranch}...`);
@@ -161,6 +193,11 @@ export async function createBranch(owner, repo, newBranch, baseBranch) {
  */
 export async function commitFiles(owner, repo, branch, files, commitMessage) {
   try {
+    if (MOCK_MODE) {
+      console.warn('[GitHub] Running in MOCK MODE - skipping commit creation');
+      return `mock-commit-${Date.now()}`;
+    }
+
     const octokit = getOctokit();
     
     console.log(`[GitHub] Committing ${files.length} files to ${branch}...`);
@@ -244,6 +281,16 @@ export async function commitFiles(owner, repo, branch, files, commitMessage) {
  */
 export async function createPullRequest(owner, repo, title, head, base, body) {
   try {
+    if (MOCK_MODE) {
+      console.warn('[GitHub] Running in MOCK MODE - returning mock PR result');
+      const pr = createMockPullRequestResult(owner, repo, title, head, base);
+      return {
+        url: pr.url,
+        number: pr.number,
+        id: pr.id
+      };
+    }
+
     const octokit = getOctokit();
     
     console.log(`[GitHub] Creating pull request: ${title}`);
@@ -275,6 +322,14 @@ export async function createPullRequest(owner, repo, title, head, base, body) {
  */
 export async function checkRateLimit() {
   try {
+    if (MOCK_MODE) {
+      return {
+        limit: 0,
+        remaining: 0,
+        reset: new Date()
+      };
+    }
+
     const octokit = getOctokit();
     const { data } = await octokit.rest.rateLimit.get();
     
@@ -294,9 +349,14 @@ export async function checkRateLimit() {
  * @throws {Error} If configuration is invalid
  */
 export function validateGitHubConfig() {
-  if (!GITHUB_TOKEN) {
+  if (!GITHUB_TOKEN && !MOCK_MODE) {
     throw new Error('GITHUB_TOKEN is not set in environment variables');
   }
+
+  if (MOCK_MODE) {
+    console.warn('[GitHub] MOCK MODE enabled - GitHub write operations will be simulated');
+  }
+
   return true;
 }
 
