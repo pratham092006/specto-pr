@@ -1,0 +1,113 @@
+{
+  "name": "sample-project",
+  "description": "A sample Node.js project for testing SpecToPR",
+  "owner": "testuser",
+  "defaultBranch": "main",
+  "language": "JavaScript",
+  "structure": {
+    "root": [
+      "package.json",
+      "README.md",
+      ".gitignore",
+      ".env.example",
+      "LICENSE"
+    ],
+    "src": {
+      "files": [
+        "index.js",
+        "app.js",
+        "config.js"
+      ],
+      "utils": [
+        "logger.js",
+        "validator.js",
+        "helpers.js"
+      ],
+      "services": [
+        "userService.js",
+        "authService.js",
+        "dataService.js"
+      ],
+      "models": [
+        "User.js",
+        "Session.js",
+        "Config.js"
+      ],
+      "routes": [
+        "index.js",
+        "users.js",
+        "auth.js"
+      ],
+      "middleware": [
+        "auth.js",
+        "errorHandler.js",
+        "logger.js"
+      ]
+    },
+    "tests": {
+      "files": [
+        "setup.js"
+      ],
+      "unit": [
+        "utils.test.js",
+        "services.test.js"
+      ],
+      "integration": [
+        "api.test.js",
+        "auth.test.js"
+      ]
+    },
+    "docs": [
+      "API.md",
+      "SETUP.md",
+      "CONTRIBUTING.md"
+    ]
+  },
+  "packageJson": {
+    "name": "sample-project",
+    "version": "1.0.0",
+    "description": "A sample Node.js project",
+    "main": "src/index.js",
+    "scripts": {
+      "start": "node src/index.js",
+      "dev": "nodemon src/index.js",
+      "test": "jest",
+      "test:watch": "jest --watch",
+      "test:coverage": "jest --coverage"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "dotenv": "^16.0.3",
+      "cors": "^2.8.5"
+    },
+    "devDependencies": {
+      "jest": "^29.5.0",
+      "nodemon": "^2.0.22",
+      "supertest": "^6.3.3"
+    }
+  },
+  "sampleFiles": {
+    "src/index.js": "import express from 'express';\nimport app from './app.js';\n\nconst PORT = process.env.PORT || 3000;\n\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});",
+    "src/app.js": "import express from 'express';\nimport cors from 'cors';\nimport routes from './routes/index.js';\n\nconst app = express();\n\napp.use(cors());\napp.use(express.json());\napp.use('/api', routes);\n\nexport default app;",
+    "src/utils/logger.js": "export function log(message) {\n  console.log(`[${new Date().toISOString()}] ${message}`);\n}\n\nexport function error(message) {\n  console.error(`[${new Date().toISOString()}] ERROR: ${message}`);\n}",
+    "src/services/userService.js": "export async function getUser(id) {\n  // Mock implementation\n  return { id, name: 'Test User', email: 'test@example.com' };\n}\n\nexport async function createUser(data) {\n  // Mock implementation\n  return { id: Date.now(), ...data };\n}",
+    "tests/unit/utils.test.js": "import { log, error } from '../../src/utils/logger.js';\n\ndescribe('Logger Utils', () => {\n  it('should log messages', () => {\n    expect(() => log('test')).not.toThrow();\n  });\n});"
+  },
+  "gitignore": [
+    "node_modules/",
+    ".env",
+    "*.log",
+    "coverage/",
+    "dist/",
+    ".DS_Store"
+  ],
+  "readme": "# Sample Project\n\nA sample Node.js project for testing.\n\n## Installation\n\n```bash\nnpm install\n```\n\n## Usage\n\n```bash\nnpm start\n```\n\n## Testing\n\n```bash\nnpm test\n```",
+  "metadata": {
+    "totalFiles": 28,
+    "totalDirectories": 8,
+    "linesOfCode": 450,
+    "testCoverage": 75,
+    "lastCommit": "2024-01-15T10:30:00Z",
+    "contributors": 3
+  }
+}

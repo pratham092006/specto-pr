@@ -1,0 +1,85 @@
+.spec-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.spec-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.spec-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 150px;
+  transition: all 0.2s;
+}
+
+.spec-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.spec-textarea.valid {
+  border-color: #10b981;
+}
+
+.spec-textarea.valid:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.spec-textarea:disabled {
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.spec-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.spec-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.char-count {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.char-count.invalid {
+  color: #ef4444;
+}
+
+.char-count.valid {
+  color: #10b981;
+}
+
+.valid-indicator {
+  color: #10b981;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@media (max-width: 480px) {
+  .spec-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Made with Bob */

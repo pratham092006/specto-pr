@@ -1,0 +1,123 @@
+Feature: User Statistics Dashboard
+
+Add a comprehensive user statistics feature to the application that provides insights into user activity and engagement.
+
+## Requirements
+
+### 1. Statistics Service
+Create a new service that calculates and retrieves user statistics:
+- Total number of registered users
+- Active users in the last 30 days
+- New user registrations in the last 7 days
+- User growth rate (percentage change month-over-month)
+- Average session duration
+- Most active users (top 10)
+
+### 2. API Endpoints
+Add the following REST API endpoints:
+
+GET /api/statistics/overview
+- Returns overall statistics summary
+- Response includes: totalUsers, activeUsers, newUsers, growthRate
+
+GET /api/statistics/users/active
+- Returns list of active users with activity metrics
+- Supports pagination (limit, offset)
+- Supports date range filtering (startDate, endDate)
+
+GET /api/statistics/users/top
+- Returns top 10 most active users
+- Includes user details and activity count
+- Sorted by activity level descending
+
+### 3. Data Models
+Create or update models to support statistics:
+- UserActivity model to track user actions
+- StatisticsCache model to store pre-calculated statistics
+
+### 4. Caching
+Implement caching for statistics to improve performance:
+- Cache statistics for 1 hour
+- Invalidate cache when new users register
+- Use in-memory cache or Redis if available
+
+### 5. Testing
+Add comprehensive tests:
+- Unit tests for statistics calculations
+- Integration tests for API endpoints
+- Test edge cases (no users, single user, etc.)
+- Mock database queries for faster tests
+
+### 6. Documentation
+Update documentation:
+- Add API endpoint documentation
+- Include request/response examples
+- Document caching behavior
+- Add usage examples
+
+## Technical Details
+
+### File Structure
+- Service: src/services/statisticsService.js
+- Routes: src/routes/statistics.js
+- Models: src/models/UserActivity.js, src/models/StatisticsCache.js
+- Tests: tests/unit/statisticsService.test.js, tests/integration/statistics.test.js
+- Docs: docs/STATISTICS.md
+
+### Dependencies
+May need to add:
+- date-fns for date calculations
+- node-cache for in-memory caching (if not using Redis)
+
+### Error Handling
+- Handle cases where no data is available
+- Return appropriate HTTP status codes
+- Provide meaningful error messages
+- Log errors for debugging
+
+### Performance Considerations
+- Use database indexes for date-based queries
+- Implement pagination for large result sets
+- Cache expensive calculations
+- Consider background jobs for statistics updates
+
+## Acceptance Criteria
+
+1. All API endpoints return correct data
+2. Statistics calculations are accurate
+3. Caching works as expected
+4. All tests pass with >80% coverage
+5. API documentation is complete
+6. Code follows existing project patterns
+7. Error handling is comprehensive
+8. Performance is acceptable (< 500ms response time)
+
+## Example Usage
+
+```javascript
+// Get overview statistics
+const response = await fetch('/api/statistics/overview');
+const stats = await response.json();
+console.log(stats);
+// Output: { totalUsers: 1250, activeUsers: 450, newUsers: 23, growthRate: 5.2 }
+
+// Get active users with pagination
+const response = await fetch('/api/statistics/users/active?limit=20&offset=0');
+const users = await response.json();
+console.log(users);
+// Output: { users: [...], total: 450, limit: 20, offset: 0 }
+
+// Get top users
+const response = await fetch('/api/statistics/users/top');
+const topUsers = await response.json();
+console.log(topUsers);
+// Output: { users: [{ id: 1, name: 'John', activityCount: 523 }, ...] }
+```
+
+## Notes
+
+- Follow existing code style and patterns
+- Use async/await for asynchronous operations
+- Include JSDoc comments for all functions
+- Ensure backward compatibility
+- Consider future extensibility (e.g., custom date ranges, additional metrics)

@@ -113,14 +113,39 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // Validate required environment variables
 function validateEnvironment() {
-  const required = ['BOB_API_URL', 'BOB_API_KEY', 'GITHUB_TOKEN'];
-  const missing = required.filter(key => !process.env[key]);
+  // Check for API configuration (Bob or OpenAI)
+  const hasApiConfig = (process.env.BOB_API_URL && process.env.BOB_API_KEY) ||
+                       (process.env.OPENAI_API_URL && process.env.OPENAI_API_KEY);
   
-  if (missing.length > 0) {
-    console.warn('⚠️  Warning: Missing environment variables:', missing.join(', '));
-    console.warn('⚠️  Server will start but API calls may fail.');
-    console.warn('⚠️  Please set these variables in your .env file.');
-    return false;
+  const hasGithubToken = process.env.GITHUB_TOKEN && process.env.GITHUB_TOKEN !== 'mock_token_for_testing';
+  
+  // Check if running in mock mode
+  const mockMode = !hasApiConfig || !hasGithubToken;
+  
+  if (mockMode) {
+    console.log('🧪 Running in MOCK MODE');
+    console.log('   - No real API calls will be made');
+    console.log('   - Example/demo code will be generated');
+    console.log('   - PRs will not be created on GitHub');
+    console.log('   - Perfect for testing the UI and workflow');
+    console.log('');
+    console.log('💡 To use real APIs:');
+    console.log('   1. Get free Groq API key: https://console.groq.com');
+    console.log('   2. Get GitHub token: https://github.com/settings/tokens');
+    console.log('   3. Update backend/.env with real credentials');
+    console.log('');
+    return true;
+  }
+  
+  // Log which API is being used
+  if (process.env.USE_OPENAI === 'true' || process.env.OPENAI_API_KEY) {
+    console.log('✓ Using OpenAI-compatible API');
+  } else {
+    console.log('✓ Using Bob API');
+  }
+  
+  if (hasGithubToken) {
+    console.log('✓ GitHub integration enabled');
   }
   
   return true;

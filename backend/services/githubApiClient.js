@@ -12,12 +12,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const MOCK_MODE = !GITHUB_TOKEN || GITHUB_TOKEN === 'mock_token_for_testing';
 
 /**
  * Initialize Octokit client
  * @returns {Octokit} Configured Octokit instance
  */
 function getOctokit() {
+  if (MOCK_MODE) {
+    console.warn('[GitHub] Running in MOCK MODE - PR will not be created on GitHub');
+    return null;
+  }
   if (!GITHUB_TOKEN) {
     throw new Error('GITHUB_TOKEN is not set in environment variables');
   }

@@ -1,0 +1,192 @@
+{
+  "repositoryInfo": {
+    "name": "sample-project",
+    "owner": "testuser",
+    "url": "https://github.com/testuser/sample-project",
+    "defaultBranch": "main",
+    "language": "JavaScript",
+    "framework": "Express.js",
+    "description": "A sample Node.js project for testing"
+  },
+  "structure": {
+    "directories": [
+      "src/",
+      "src/utils/",
+      "src/services/",
+      "src/models/",
+      "src/routes/",
+      "src/middleware/",
+      "tests/",
+      "tests/unit/",
+      "tests/integration/",
+      "docs/"
+    ],
+    "filesByType": {
+      "javascript": [
+        "src/index.js",
+        "src/app.js",
+        "src/config.js",
+        "src/utils/logger.js",
+        "src/utils/validator.js",
+        "src/utils/helpers.js",
+        "src/services/userService.js",
+        "src/services/authService.js",
+        "src/services/dataService.js",
+        "src/models/User.js",
+        "src/models/Session.js",
+        "src/models/Config.js",
+        "src/routes/index.js",
+        "src/routes/users.js",
+        "src/routes/auth.js",
+        "src/middleware/auth.js",
+        "src/middleware/errorHandler.js",
+        "src/middleware/logger.js"
+      ],
+      "test": [
+        "tests/setup.js",
+        "tests/unit/utils.test.js",
+        "tests/unit/services.test.js",
+        "tests/integration/api.test.js",
+        "tests/integration/auth.test.js"
+      ],
+      "config": [
+        "package.json",
+        ".env.example",
+        ".gitignore"
+      ],
+      "documentation": [
+        "README.md",
+        "docs/API.md",
+        "docs/SETUP.md",
+        "docs/CONTRIBUTING.md"
+      ]
+    },
+    "totalFiles": 28,
+    "totalDirectories": 8
+  },
+  "patterns": {
+    "architecture": {
+      "type": "MVC-like",
+      "description": "Follows a service-oriented architecture with clear separation of concerns",
+      "layers": [
+        "routes (API endpoints)",
+        "services (business logic)",
+        "models (data structures)",
+        "middleware (cross-cutting concerns)",
+        "utils (helper functions)"
+      ]
+    },
+    "naming": {
+      "convention": "camelCase",
+      "fileNaming": "camelCase for files, PascalCase for classes",
+      "examples": {
+        "files": "userService.js, authService.js",
+        "classes": "User.js, Session.js",
+        "functions": "getUser(), createUser()"
+      }
+    },
+    "imports": {
+      "style": "ES6 modules",
+      "pattern": "import/export",
+      "examples": [
+        "import express from 'express';",
+        "import { getUser } from './services/userService.js';",
+        "export default app;",
+        "export { log, error };"
+      ]
+    },
+    "codeStyle": {
+      "indentation": "2 spaces",
+      "quotes": "single quotes",
+      "semicolons": true,
+      "lineLength": 80,
+      "bracketStyle": "same line"
+    },
+    "testing": {
+      "framework": "Jest",
+      "testLocation": "tests/ directory",
+      "testNaming": "*.test.js",
+      "structure": "separate unit and integration tests",
+      "coverage": "75%",
+      "patterns": [
+        "describe/it blocks",
+        "beforeAll/afterAll hooks",
+        "expect assertions"
+      ]
+    },
+    "errorHandling": {
+      "style": "try-catch blocks",
+      "middleware": "centralized error handler",
+      "logging": "custom logger utility",
+      "responses": "consistent JSON error format"
+    },
+    "dependencies": {
+      "runtime": [
+        "express",
+        "dotenv",
+        "cors"
+      ],
+      "development": [
+        "jest",
+        "nodemon",
+        "supertest"
+      ]
+    }
+  },
+  "codeExamples": {
+    "servicePattern": {
+      "description": "Services follow async/await pattern with error handling",
+      "example": "export async function getUser(id) {\n  try {\n    const user = await database.findUser(id);\n    return user;\n  } catch (error) {\n    throw new Error(`Failed to get user: ${error.message}`);\n  }\n}"
+    },
+    "routePattern": {
+      "description": "Routes use Express router with async handlers",
+      "example": "router.get('/users/:id', async (req, res) => {\n  try {\n    const user = await userService.getUser(req.params.id);\n    res.json({ success: true, data: user });\n  } catch (error) {\n    res.status(500).json({ success: false, error: error.message });\n  }\n});"
+    },
+    "testPattern": {
+      "description": "Tests use Jest with describe/it blocks",
+      "example": "describe('User Service', () => {\n  it('should get user by id', async () => {\n    const user = await getUser(1);\n    expect(user).toBeDefined();\n    expect(user.id).toBe(1);\n  });\n});"
+    },
+    "errorPattern": {
+      "description": "Errors are thrown with descriptive messages",
+      "example": "if (!user) {\n  throw new Error('User not found');\n}"
+    },
+    "loggingPattern": {
+      "description": "Logging uses custom logger utility",
+      "example": "import { log, error } from './utils/logger.js';\n\nlog('Processing request');\nerror('Failed to process request');"
+    }
+  },
+  "bestPractices": {
+    "modularity": "Code is organized into small, focused modules",
+    "reusability": "Common functionality extracted into utils",
+    "testability": "Services are easily testable with mocks",
+    "documentation": "Functions have JSDoc comments",
+    "errorHandling": "Consistent error handling throughout",
+    "configuration": "Environment variables for configuration",
+    "security": "Input validation and sanitization"
+  },
+  "recommendations": {
+    "newFeatures": [
+      "Place new services in src/services/",
+      "Add corresponding tests in tests/unit/",
+      "Follow existing naming conventions",
+      "Use async/await for asynchronous operations",
+      "Include error handling in all functions",
+      "Add JSDoc comments for documentation"
+    ],
+    "fileLocations": {
+      "services": "src/services/",
+      "routes": "src/routes/",
+      "models": "src/models/",
+      "utils": "src/utils/",
+      "tests": "tests/unit/ or tests/integration/",
+      "middleware": "src/middleware/"
+    }
+  },
+  "metadata": {
+    "extractedAt": "2024-01-15T10:30:00Z",
+    "version": "1.0.0",
+    "confidence": 0.95,
+    "filesAnalyzed": 28,
+    "linesAnalyzed": 450
+  }
+}

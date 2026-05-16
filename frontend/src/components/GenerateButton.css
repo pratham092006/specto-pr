@@ -1,0 +1,74 @@
+.generate-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.generate-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.generate-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.generate-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.generate-button.loading {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+
+.generate-button .icon {
+  font-size: 1.5rem;
+  animation: bounce 1s infinite;
+}
+
+.generate-button .spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 480px) {
+  .generate-button {
+    font-size: 1rem;
+    padding: 0.875rem 1.5rem;
+  }
+}
+
+/* Made with Bob */
