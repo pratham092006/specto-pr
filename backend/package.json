@@ -1,0 +1,35 @@
+{
+  "name": "spectropr-backend",
+  "version": "1.0.0",
+  "description": "Backend API service for SpecToPR - AI-powered specification to pull request generator",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "github",
+    "pull-request",
+    "code-generation",
+    "bob-api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "@octokit/rest": "^20.0.2",
+    "simple-git": "^3.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
